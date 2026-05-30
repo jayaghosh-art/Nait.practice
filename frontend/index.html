@@ -1,46 +1,51 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <title>HTML Elements Practice</title>
 </head>
-
 <body>
 
-    <!-- Heading Tags -->
-    <h1>Main Heading</h1>
-    <h2>Sub Heading</h2>
-    <h3>Smaller Heading</h3>
-    <h4>Heading 4</h4>
-    <h5>Heading 5</h5>
-    <h6>Heading 6</h6>
+  <div class="container">
 
-    <hr>
+    <div class="left">
+      <input type="text" id="name" placeholder="Enter name">
+      <button onclick="saveUser()">Save</button>
+    </div>
 
-    <!-- Paragraph -->
-    <p>
-        This is a simple paragraph written in HTML.
-        HTML is used to create webpages and display content in a browser.
-    </p>
+    <div class="right">
+      <h3>Users</h3>
+      <div id="users"></div>
+    </div>
 
-    <hr>
+  </div>
 
-    <!-- Text Formatting -->
-    <h2>Text Formatting</h2>
+  <script>
+    const API = "";
 
-    <p>
-        <b>Bold Text</b><br>
-        <i>Italic Text</i><br>
-        <u>Underlined Text</u><br>
-        <mark>Highlighted Text</mark><br>
-        <small>Small Text</small><br>
-        <del>Deleted Text</del><br>
-        H<sub>2</sub>O<br>
-        x<sup>2</sup> + y<sup>2</sup>
-    </p>
+    async function saveUser() {
+      const name = document.getElementById("name").value;
 
-    <hr>
+      await fetch(API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name })
+      });
+
+      document.getElementById("name").value = "";
+      loadUsers();
+    }
+
+    async function loadUsers() {
+      const res = await fetch(API);
+      const users = await res.json();
+
+      document.getElementById("users").innerHTML =
+        users.map(u => `<p>${u.name}</p>`).join("");
+    }
+
+    loadUsers();
+  </script>
 
 </body>
-
 </html>
